@@ -1,23 +1,22 @@
 {
   "tasks": [
-  {
-    "id":"1",
-    "text":"Hackerrank problem",
-    "day":"March 25th at 09:00am",
-    "reminder":true
-  },
-  {
-  "id":"2",
-  "text":"project UML",
-  "day":"March 26th at 09:00am",
-  "reminder":false
-  },
-  {
-  "id":"3",
-  "text": "Swimming session",
-  "day": "March 27th at 09:00am",
-  "reminder":true
-  }
-
-    ]
+    {
+      "id": "1",
+      "text": "Hackerrank problem",
+      "day": "March 25th at 09:00am",
+      "reminder": true
+    },
+    {
+      "id": "2",
+      "text": "project UML",
+      "day": "March 26th at 09:00am",
+      "reminder": false
+    },
+    {
+      "id": "3",
+      "text": "Swimming session",
+      "day": "March 27th at 09:00am",
+      "reminder": true
+    }
+  ]
 }

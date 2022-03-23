@@ -38,27 +38,60 @@ export default {
     this.tasks = await this.fetchTasks()
   },
   methods:{
-    deleteTask(id){
+  async  deleteTask(id){
       if(confirm('Are you sure ?')){
-        this.tasks = this.tasks.filter((task) => task.id !== id)
-
+        const resquest = await fetch(`api/tasks/${id}`,
+            {
+              method:'DELETE',
+            })
+               resquest.status === 200
+              ? (this.tasks = this.tasks.filter((task) => task.id !== id))
+              : alert('Error deleting task')
       }
     },
 
-    toggleReminder(id){
+  async  toggleReminder(id){
+     const taskToggle = await this.fetchSingleTask(id)
+     const update = {...taskToggle,reminder:!taskToggle.reminder}
+
+     const request = await fetch(`api/tasks/${id}`,
+         {
+           method:'PUT',
+           headers: {
+             'Content-type':'application/json'
+           },
+           body:JSON.stringify(update)
+         })
+         const data = await request.json()
       this.tasks = this.tasks.map((task)=> task.id === id
-      ? {...task, reminder: !task.reminder} : task )
+      ? {...task, reminder: data.reminder} : task )
     },
 
     async fetchTasks(){
-      const result = await fetch('http://localhost:3000/tasks')
+      const result = await fetch('api/tasks')
       const data = await  result.json()
 
       return data
     },
 
-    addTask(task){
-      this.tasks = [...this.tasks, task]
+    async fetchSingleTask(id){
+      const result = await fetch(`api/tasks/${id}`)
+      const data = await  result.json()
+
+      return data
+    },
+
+   async addTask(task){
+      const result = await fetch('api/tasks', {
+        method: 'POST',
+        headers:{
+          'content-type':'application/json',
+        },
+        body:JSON.stringify(task)
+
+      })
+      const data = await result.json()
+      this.tasks = [...this.tasks, data]
     },
 
     toggleAddTask(){
