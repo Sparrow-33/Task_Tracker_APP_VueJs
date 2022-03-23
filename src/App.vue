@@ -1,7 +1,15 @@
 <template>
   <div class="container">
-    <add_Task @add-task="addTask"/>
-    <Header_Comp/>
+
+    <Header_Comp
+        @toggle-add-task="toggleAddTask"
+        :showAddTask = 'showAddTask'
+    />
+
+    <div v-show="showAddTask">
+      <add_Task @add-task="addTask"/>
+    </div>
+
     <Tasks_Comp
         @toggle-reminder="toggleReminder"
         @delete-task="deleteTask" :tasks="tasks" />
@@ -18,34 +26,16 @@ export default {
     // eslint-disable-next-line vue/no-unused-components
     Header_Comp,
     Tasks_Comp,
-    add_Task
+    add_Task,
   },
   data(){
     return {
-      tasks: []
+      tasks: [],
+      showAddTask:false,
     }
   },
-  created() {
-    this.tasks = [
-      {
-        id:1,
-        text:'Hackerrank problem',
-        day:'March 25th at 09:00am',
-        reminder:true,
-      },
-      {
-        id:2,
-        text:'project UML',
-        day:'March 26th at 09:00am',
-        reminder:false,
-      },
-      {
-        id:3,
-        text:'Swimming session',
-        day:'March 27th at 09:00am',
-        reminder:true,
-      }
-    ]
+ async created() {
+    this.tasks = await this.fetchTasks()
   },
   methods:{
     deleteTask(id){
@@ -54,13 +44,26 @@ export default {
 
       }
     },
+
     toggleReminder(id){
       this.tasks = this.tasks.map((task)=> task.id === id
       ? {...task, reminder: !task.reminder} : task )
     },
+
+    async fetchTasks(){
+      const result = await fetch('http://localhost:3000/tasks')
+      const data = await  result.json()
+
+      return data
+    },
+
     addTask(task){
       this.tasks = [...this.tasks, task]
     },
+
+    toggleAddTask(){
+      this.showAddTask = !this.showAddTask
+       },
   }
 }
 </script>
@@ -83,6 +86,7 @@ body {
   border: 1px solid steelblue;
   padding: 30px;
   border-radius: 5px;
+
 }
 .btn {
   display: inline-block;

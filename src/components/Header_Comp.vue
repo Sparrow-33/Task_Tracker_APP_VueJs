@@ -1,7 +1,10 @@
 <template>
   <header>
     <h1>This is a header</h1>
-    <Button text="Add Task" color="green"/>
+    <Button
+        @btn-click="$emit('toggle-add-task')"
+        :text="showAddTask ? 'Close' : 'Add Task'"
+        :color="showAddTask ? 'red' : 'green' "/>
 
 
   </header>
@@ -15,9 +18,10 @@ import Button from './Button-comp'
   name: 'Header_Comp',
   props:{
     title : String,
+    showAddTask : Boolean,
   } ,
    components:{
-    Button
+    Button,
    }
 }
 </script>

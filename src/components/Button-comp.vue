@@ -14,7 +14,8 @@ export default {
   },
   methods: {
     affich(){
-      console.log('click')
+      this.$emit('btn-click')
+      console.log('1')
 
     },
   },
